@@ -30,35 +30,11 @@ CMD_TYPE_QUERY_DB = 4
 CMD_TYPE_INVALID = -1
 CMD_TYPE_UNKNOWN = -2
 
-line_bot_api = LineBotApi(os.environ['Token'], timeout=60) #Your Channel Access Token
-handler = WebhookHandler(os.environ['Secret']) #Your Channel Secret
+# line_bot_api = LineBotApi(os.environ['Token'], timeout=60) #Your Channel Access Token
+# handler = WebhookHandler(os.environ['Secret']) #Your Channel Secret
 
-CMD_DICT = {
-    'run':{
-        'raw_command': None,
-        'type': CMD_TYPE_EXECUTE_SECTION,
-        'callback': app.send_execute_section_cmd,
-        'tokens': None
-    },
-    'help':{
-        'raw_command': None,
-        'type': CMD_TYPE_HELP,
-        'callback': None,
-        'tokens': None
-    },
-    'set':{
-        'raw_command': None,
-        'type': CMD_TYPE_QUERY_DB,
-        'callback': app.send_query_cmd,
-        'tokens': None
-    },
-    'show':{
-        'raw_command': None,
-        'type': CMD_TYPE_SHOW_CFG,
-        'callback': app.send_show_cfg_cmd,
-        'tokens': None
-    }
-}
+line_bot_api = LineBotApi('a', timeout=60) #Your Channel Access Token
+handler = WebhookHandler('b') #Your Channel Secret
 
 def send_execute_section_cmd(cmd_dict):
     try:
@@ -110,6 +86,34 @@ def send_set_cfg_cmd(cmd_dict):
 def send_show_cfg_cmd(cmd_dict):
     return send_execute_section_cmd(cmd_dict)
 
+
+CMD_DICT = {
+    'run':{
+        'raw_command': None,
+        'type': CMD_TYPE_EXECUTE_SECTION,
+        'callback': send_execute_section_cmd,
+        'tokens': None
+    },
+    'help':{
+        'raw_command': None,
+        'type': CMD_TYPE_HELP,
+        'callback': None,
+        'tokens': None
+    },
+    'set':{
+        'raw_command': None,
+        'type': CMD_TYPE_QUERY_DB,
+        'callback': send_query_cmd,
+        'tokens': None
+    },
+    'show':{
+        'raw_command': None,
+        'type': CMD_TYPE_SHOW_CFG,
+        'callback': send_show_cfg_cmd,
+        'tokens': None
+    }
+}
+
 @app.route("/callback", methods=['POST'])
 def callback():
     # get X-Line-Signature header value
@@ -145,13 +149,6 @@ def handle_text_message(event):
 
 def procss_cmd(cmd):
     print u'raw command = {0}'.format(cmd)
-    # cmd_dict = {
-    #     'type': CMD_TYPE_INVALID,
-    #     'action': '',
-    #     'raw_cmd': cmd,
-    #     u'cmd_tokens': list(),
-    #     'callback': None
-    # }
     if not cmd or not cmd.startswith('/'):
         return None
 
@@ -166,10 +163,12 @@ def procss_cmd(cmd):
     else:
         return None
 
+
 def reply_msg(event, msg):
     line_bot_api.reply_message(
         event.reply_token,
         TextSendMessage(text=msg)) #reply the same message from user
+
 
 def push_msg(event, msg):
     # print event.source.user_id
@@ -181,8 +180,6 @@ def push_msg(event, msg):
         line_bot_api.push_message(room_id, TextSendMessage(text=msg))
 
 
-
-
 def get_help_msg():
     # TODO:
     # move them to statice variable, not to generate them in run-time
@@ -192,60 +189,7 @@ def get_help_msg():
         with open(HELP_FILE_PATH, 'r') as help_fd:
             msg = help_fd.read()
     return msg
-# def send_cmd(cmd):
-#     app.logger.debug(u'Raw command = {0}'.format(cmd))
-#     # raw command <user> <ac {section} {key=v;key=v;...}
-#     # raw command /<action> <user> <key=v;key=v;...>
-#     post_payload = None
-#     cmd_list = cmd.split(' ')
-#     # print 'Cmd list = {0}'.format(cmd_list)
-#     action = cmd_list[0][1:]  #  ignore staring '/''
-#     if action in ['run', 'set', 'unset', 'show_setting']:
-#         try:
-#             user = cmd_list[1]
-#         except:
-#             user = None
 
-#         try:
-#             section = cmd_list[2].upper()
-#         except:
-#             section = None
-
-#         try:
-#             params = cmd_list[3:]
-#             param_dict = dict()
-#             for itm_raw in params:
-#                 itms = itm_raw.split(';')
-#                 for itm in itms:
-#                     key, value = itm.split('=')
-#                     # print key, value
-#                     param_dict[key] = value
-#         except:
-#             param_dict = None
-#         post_url = '{0}/{1}'.format(CC_BOT_ENDPOINT, action)
-#         if user:
-#             post_url = post_url + '/' + user
-#         if section:
-#             post_url = post_url + '/' + section
-
-#     elif action in ['query']:
-#         try:
-#             db, field, value = cmd_list[1:4]
-#         except:
-#             return '參數錯誤'
-#         param_dict = None
-#         post_url = u'{0}/{1}/{2}/{3}/{4}'.format(CC_BOT_ENDPOINT, action, db, field, value)
-#     else:
-#         print 'Unsupported command {0} yet'.format(action)
-
-#     if param_dict:
-#         post_payload = json.dumps(param_dict)
-#         app.logger.info(post_payload)
-
-#     print u'Post Url = {0}'.format(post_url)
-#     print u'Post Body = {0}'.format(post_payload)
-#     r = requests.post(post_url, data=post_payload, headers=DEFAULT_HEADERS)
-#     return r.text
 
 def post(url, data=None, headers=DEFAULT_HEADERS):
     r = requests.post(url, data=data, headers=DEFAULT_HEADERS)
@@ -253,4 +197,5 @@ def post(url, data=None, headers=DEFAULT_HEADERS):
 
 import os
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=os.environ['PORT'])
+    # app.run(host='0.0.0.0', port=os.environ['PORT'])
+    app.run(host='0.0.0.0', port=8080)
