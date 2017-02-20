@@ -12,6 +12,7 @@ from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent
 from linebot.models import TextMessage
 from linebot.models import TextSendMessage
+import codecs
 
 
 app = Flask(__name__)
@@ -185,8 +186,11 @@ def push_msg(event, msg):
 def get_help_msg():
     # TODO:
     # move them to statice variable, not to generate them in run-time
-
-
+    if HELP_MSG:
+        return HELP_MSG
+    else:
+        with open(HELP_FILE_PATH, 'r') as help_fd:
+            msg = help_fd.read()
     return msg
 # def send_cmd(cmd):
 #     app.logger.debug(u'Raw command = {0}'.format(cmd))
