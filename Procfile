@@ -1,0 +1,1 @@
+web: PYTHONIOENCODING=UTF-8 python app.py
