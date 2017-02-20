@@ -34,7 +34,7 @@ CMD_DICT = {
     'run':{
         'raw_command': None,
         'type': CMD_TYPE_EXECUTE_SECTION,
-        'callback': = send_execute_section_cmd,
+        'callback': send_execute_section_cmd,
         'tokens': None
     },
     'help':{
