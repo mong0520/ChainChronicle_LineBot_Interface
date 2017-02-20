@@ -154,6 +154,7 @@ def procss_cmd(cmd):
     action = cmd_list[0][1:]  #  ignore staring '/''
 
     if action in CMD_DICT.keys():
+        CMD_DICT[action]['action'] = action
         CMD_DICT[action]['raw_command'] = u'{0}'.format(cmd)
         CMD_DICT[action]['tokens'] = cmd_list[1:]
         print u'Processed command = {0}'.format(CMD_DICT[action])
