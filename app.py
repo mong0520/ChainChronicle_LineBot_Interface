@@ -27,6 +27,7 @@ CMD_TYPE_EXECUTE_SECTION = 1
 CMD_TYPE_SET_CFG = 2
 CMD_TYPE_SHOW_CFG = 3
 CMD_TYPE_QUERY_DB = 4
+CMD_TYPE_UNSET_CFG = 5
 CMD_TYPE_INVALID = -1
 CMD_TYPE_UNKNOWN = -2
 
@@ -81,6 +82,10 @@ def send_set_cfg_cmd(cmd_dict):
         return str(e)
 
 
+def send_unset_cfg_cmd(cmd_dict):
+    return send_set_cfg_cmd(cmd_dict)
+
+
 def send_show_cfg_cmd(cmd_dict):
     return send_execute_section_cmd(cmd_dict)
 
@@ -100,14 +105,26 @@ CMD_DICT = {
     },
     'set':{
         'raw_command': None,
+        'type': CMD_TYPE_SHOW_CFG,
+        'callback': send_set_cfg_cmd,
+        'tokens': None
+    },
+    'query':{
+        'raw_command': None,
         'type': CMD_TYPE_QUERY_DB,
         'callback': send_query_cmd,
         'tokens': None
-    },
+    }
     'show':{
         'raw_command': None,
         'type': CMD_TYPE_SHOW_CFG,
         'callback': send_show_cfg_cmd,
+        'tokens': None
+    },
+    'unset':{
+        'raw_command': None,
+        'type': CMD_TYPE_UNSET_CFG,
+        'callback': send_unset_cfg_cmd,
         'tokens': None
     }
 }
