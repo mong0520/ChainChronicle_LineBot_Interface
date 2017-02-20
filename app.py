@@ -18,6 +18,8 @@ app = Flask(__name__)
 VERSION = 'v0.1.1'
 CC_BOT_ENDPOINT = 'http://52.192.105.98'
 DEFAULT_HEADERS = {'Content-Type': 'application/json'}
+HELP_FILE_PATH = 'line_help.txt'
+HELP_MSG = None
 
 CMD_TYPE_HELP = 0
 CMD_TYPE_EXECUTE_SECTION = 1
@@ -57,6 +59,55 @@ CMD_DICT = {
     }
 }
 
+def send_execute_section_cmd(cmd_dict):
+    try:
+        action = cmd_dict['action']
+        user, section = cmd_dict['tokens']
+        post_url = '{0}/{1}/{2}/{3}'.format(CC_BOT_ENDPOINT, action, user, section.upper())
+        ret = post(post_url)
+        print u'{0}'.format(ret)
+        return ret
+    except Exception as e:
+        print e
+        return str(e)
+
+def send_query_cmd(cmd_dict):
+    try:
+        action = cmd_dict['action']
+        db, field, value = cmd_dict['tokens']
+        post_url = u'{0}/{1}/{2}/{3}/{4}'.format(CC_BOT_ENDPOINT, action, db, field, value)
+        ret = post(post_url)
+        print u'{0}'.format(ret)
+        return ret
+    except Exception as e:
+        print e
+        return str(e)
+
+def send_set_cfg_cmd(cmd_dict):
+    try:
+        action = cmd_dict['action']
+        user, section = cmd_dict['tokens'][0:2]
+        post_url = u'{0}/{1}/{2}/{3}'.format(CC_BOT_ENDPOINT, action, user, section.upper())
+        print cmd_dict['tokens']
+        params = cmd_dict['tokens'][2:]
+        param_dict = dict()
+        for itm_raw in params:
+            itms = itm_raw.split(';')
+            for itm in itms:
+                key, value = itm.split('=')
+                # print key, value
+                param_dict[key] = value
+        post_payload = json.dumps(param_dict)
+        ret = post(post_url, data=post_payload)
+        print u'{0}'.format(ret)
+        return ret
+    except Exception as e:
+        print e
+        return str(e)
+
+
+def send_show_cfg_cmd(cmd_dict):
+    return send_execute_section_cmd(cmd_dict)
 
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -128,55 +179,7 @@ def push_msg(event, msg):
         room_id = event.source.room_id
         line_bot_api.push_message(room_id, TextSendMessage(text=msg))
 
-def send_execute_section_cmd(cmd_dict):
-    try:
-        action = cmd_dict['action']
-        user, section = cmd_dict['tokens']
-        post_url = '{0}/{1}/{2}/{3}'.format(CC_BOT_ENDPOINT, action, user, section.upper())
-        ret = post(post_url)
-        print u'{0}'.format(ret)
-        return ret
-    except Exception as e:
-        print e
-        return str(e)
 
-def send_query_cmd(cmd_dict):
-    try:
-        action = cmd_dict['action']
-        db, field, value = cmd_dict['tokens']
-        post_url = u'{0}/{1}/{2}/{3}/{4}'.format(CC_BOT_ENDPOINT, action, db, field, value)
-        ret = post(post_url)
-        print u'{0}'.format(ret)
-        return ret
-    except Exception as e:
-        print e
-        return str(e)
-
-def send_set_cfg_cmd(cmd_dict):
-    try:
-        action = cmd_dict['action']
-        user, section = cmd_dict['tokens'][0:2]
-        post_url = u'{0}/{1}/{2}/{3}'.format(CC_BOT_ENDPOINT, action, user, section.upper())
-        print cmd_dict['tokens']
-        params = cmd_dict['tokens'][2:]
-        param_dict = dict()
-        for itm_raw in params:
-            itms = itm_raw.split(';')
-            for itm in itms:
-                key, value = itm.split('=')
-                # print key, value
-                param_dict[key] = value
-        post_payload = json.dumps(param_dict)
-        ret = post(post_url, data=post_payload)
-        print u'{0}'.format(ret)
-        return ret
-    except Exception as e:
-        print e
-        return str(e)
-
-
-def send_show_cfg_cmd(cmd_dict):
-    return send_execute_section_cmd(cmd_dict)
 
 
 def get_help_msg():
