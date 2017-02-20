@@ -30,11 +30,9 @@ CMD_TYPE_QUERY_DB = 4
 CMD_TYPE_INVALID = -1
 CMD_TYPE_UNKNOWN = -2
 
-# line_bot_api = LineBotApi(os.environ['Token'], timeout=60) #Your Channel Access Token
-# handler = WebhookHandler(os.environ['Secret']) #Your Channel Secret
+line_bot_api = LineBotApi(os.environ['Token'], timeout=60) #Your Channel Access Token
+handler = WebhookHandler(os.environ['Secret']) #Your Channel Secret
 
-line_bot_api = LineBotApi('a', timeout=60) #Your Channel Access Token
-handler = WebhookHandler('b') #Your Channel Secret
 
 def send_execute_section_cmd(cmd_dict):
     try:
@@ -197,5 +195,5 @@ def post(url, data=None, headers=DEFAULT_HEADERS):
 
 import os
 if __name__ == "__main__":
-    # app.run(host='0.0.0.0', port=os.environ['PORT'])
-    app.run(host='0.0.0.0', port=8080)
+    app.run(host='0.0.0.0', port=os.environ['PORT'])
+    # app.run(host='0.0.0.0', port=8080)
