@@ -26,3 +26,6 @@ Fixie :
 
 5. 到Line developers 設定`Webhook URL`
 `https://{YOUR_HEROKU_SERVER_ID}.herokuapp.com/callback`
+
+# How to Use?
+tbd
