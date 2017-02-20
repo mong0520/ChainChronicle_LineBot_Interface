@@ -18,7 +18,7 @@ app = Flask(__name__)
 VERSION = 'v0.1.1'
 CC_BOT_ENDPOINT = 'http://52.192.105.98'
 DEFAULT_HEADERS = {'Content-Type': 'application/json'}
-HELP_FILE_PATH = 'line_help.txt'
+HELP_FILE_PATH = 'cmd_help.txt'
 HELP_MSG = None
 
 CMD_TYPE_HELP = 0
@@ -36,7 +36,7 @@ CMD_DICT = {
     'run':{
         'raw_command': None,
         'type': CMD_TYPE_EXECUTE_SECTION,
-        'callback': send_execute_section_cmd,
+        'callback': app.send_execute_section_cmd,
         'tokens': None
     },
     'help':{
@@ -48,13 +48,13 @@ CMD_DICT = {
     'set':{
         'raw_command': None,
         'type': CMD_TYPE_QUERY_DB,
-        'callback': send_query_cmd,
+        'callback': app.send_query_cmd,
         'tokens': None
     },
     'show':{
         'raw_command': None,
         'type': CMD_TYPE_SHOW_CFG,
-        'callback': send_show_cfg_cmd,
+        'callback': app.send_show_cfg_cmd,
         'tokens': None
     }
 }
@@ -185,28 +185,7 @@ def push_msg(event, msg):
 def get_help_msg():
     # TODO:
     # move them to statice variable, not to generate them in run-time
-    msg = u'歡迎使用鎖鍊戰記機器人，目前版本 {0}\n\n'.format(VERSION)
-    msg += u'==基本操作==\n'
-    msg += u'Q: 如何看狀態？\n'
-    msg += u'A: /run <user> STATUS\n'
-    msg += u'Q: 如何買成長卡？\n'
-    msg += u'A: /set <user> buy Type=char;Count=n\n'
-    msg += u'A: /run <user> buy\n\n'
-    msg += u'Q: 如何買武器冶鍊卡？\n'
-    msg += u'A: /set <user> buy Type=weapon;Count=n\n'
-    msg += u'A: /run <user> buy\n\n'
-    msg += u'Q: 如何轉活動酒場的轉蛋\n'
-    msg += u'A: /run <user> gacha\n\n'
-    msg += u'Q: 如何查詢資料庫\n'
-    msg += u'A: /query {charainfo | questdigest}> <field> <value>\n'
-    msg += u'e.q: /query charainfo name 菲娜\n'
-    msg += u'e.q: /query charainfo title 狐尾\n'
-    msg += u'e.q: /query questdigest name 養成\n'
-    msg += u'==進階操作==\n'
-    msg += u'Q: 如何設定參數?'
-    msg += u'A: /set <user> <SECTION> <Key=Value;Key=Value;...>\n'
-    msg += u'Q: 如何顯示目前參數?'
-    msg += u'A: /show <user> ALL or <any setting name>\n\n'
+
 
     return msg
 # def send_cmd(cmd):
