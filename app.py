@@ -114,7 +114,7 @@ CMD_DICT = {
         'type': CMD_TYPE_QUERY_DB,
         'callback': send_query_cmd,
         'tokens': None
-    }
+    },
     'show':{
         'raw_command': None,
         'type': CMD_TYPE_SHOW_CFG,
