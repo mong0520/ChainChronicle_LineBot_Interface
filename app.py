@@ -30,6 +30,33 @@ CMD_TYPE_UNKNOWN = -2
 line_bot_api = LineBotApi(os.environ['Token'], timeout=60) #Your Channel Access Token
 handler = WebhookHandler(os.environ['Secret']) #Your Channel Secret
 
+CMD_DICT = {
+    'run':{
+        'raw_command': None,
+        'type': CMD_TYPE_EXECUTE_SECTION,
+        'callback': = send_execute_section_cmd,
+        'tokens': None
+    },
+    'help':{
+        'raw_command': None,
+        'type': CMD_TYPE_HELP,
+        'callback': None,
+        'tokens': None
+    },
+    'set':{
+        'raw_command': None,
+        'type': CMD_TYPE_QUERY_DB,
+        'callback': send_query_cmd,
+        'tokens': None
+    },
+    'show':{
+        'raw_command': None,
+        'type': CMD_TYPE_SHOW_CFG,
+        'callback': send_show_cfg_cmd,
+        'tokens': None
+    }
+}
+
 
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -66,48 +93,26 @@ def handle_text_message(event):
 
 def procss_cmd(cmd):
     print u'raw command = {0}'.format(cmd)
-    cmd_dict = {
-        'type': CMD_TYPE_INVALID,
-        'action': '',
-        'raw_cmd': cmd,
-        u'cmd_tokens': list(),
-        'callback': None
-    }
+    # cmd_dict = {
+    #     'type': CMD_TYPE_INVALID,
+    #     'action': '',
+    #     'raw_cmd': cmd,
+    #     u'cmd_tokens': list(),
+    #     'callback': None
+    # }
     if not cmd or not cmd.startswith('/'):
-        return cmd_dict
+        return None
 
     cmd_list = cmd.split(' ')
     action = cmd_list[0][1:]  #  ignore staring '/''
-    cmd_dict['action'] = action
 
-    if action == 'run':
-        cmd_dict['type'] = CMD_TYPE_EXECUTE_SECTION
-        cmd_dict['callback'] = send_execute_section_cmd
-
-    elif action == 'help':
-        cmd_dict['type'] = CMD_TYPE_HELP
-        cmd_dict['callback'] = None
-
-    elif action == 'query':
-        cmd_dict['type'] = CMD_TYPE_QUERY_DB
-        cmd_dict['callback'] = send_query_cmd
-
-    elif action == 'set':
-        cmd_dict['type'] = CMD_TYPE_SET_CFG
-        cmd_dict['callback'] = send_set_cfg_cmd
-
-    elif action == 'show':
-        cmd_dict['type'] = CMD_TYPE_SHOW_CFG
-        cmd_dict['callback'] = send_show_cfg_cmd
-
+    if action in CMD_DICT.keys():
+        CMD_DICT[action]['raw_command'] = u'{0}'.format(cmd)
+        CMD_DICT[action]['tokens'] = cmd_list[1:]
+        print u'Processed command = {0}'.format(CMD_DICT[action])
+        return CMD_DICT[action]
     else:
-        cmd_dict['type'] = CMD_TYPE_UNKNOWN
-        cmd_dict['callback'] = None
-
-    cmd_dict['tokens'] = cmd_list[1:]
-    print u'Processed command = {0}'.format(cmd_dict)
-    return cmd_dict
-
+        return None
 
 def reply_msg(event, msg):
     line_bot_api.reply_message(
