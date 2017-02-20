@@ -1,0 +1,22 @@
+歡迎使用鎖鍊戰記機器人
+==基本操作==
+Q: 如何看狀態？
+A: /run <user> STATUS
+Q: 如何買成長卡？
+A: /set <user> buy Type=char;Count=n
+A: /run <user> buy\n
+Q: 如何買武器冶鍊卡？
+A: /set <user> buy Type=weapon;Count=n
+A: /run <user> buy\n
+Q: 如何轉活動酒場的轉蛋
+A: /run <user> gacha\n
+Q: 如何查詢資料庫
+A: /query {charainfo | questdigest}> <field> <value>
+e.q: /query charainfo name 菲娜
+e.q: /query charainfo title 狐尾
+e.q: /query questdigest name 養成
+==進階操作==
+Q: 如何設定參數?'
+A: /set <user> <SECTION> <Key=Value;Key=Value;...>
+Q: 如何顯示目前參數?'
+A: /show <user> ALL or <any setting name>\n
