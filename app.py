@@ -83,7 +83,17 @@ def send_set_cfg_cmd(cmd_dict):
 
 
 def send_unset_cfg_cmd(cmd_dict):
-    return send_set_cfg_cmd(cmd_dict)
+    try:
+        action = cmd_dict['action']
+        user, section, option = cmd_dict['tokens'][0:3]
+        post_url = u'{0}/{1}/{2}/{3}/{4}'.format(CC_BOT_ENDPOINT, action, user, section.upper(), option)
+        print cmd_dict['tokens']
+        ret = post(post_url)
+        print u'{0}'.format(ret)
+        return ret
+    except Exception as e:
+        print e
+        return str(e)
 
 
 def send_show_cfg_cmd(cmd_dict):
