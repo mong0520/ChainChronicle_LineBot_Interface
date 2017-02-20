@@ -64,7 +64,6 @@ def send_set_cfg_cmd(cmd_dict):
         action = cmd_dict['action']
         user, section = cmd_dict['tokens'][0:2]
         post_url = u'{0}/{1}/{2}/{3}'.format(CC_BOT_ENDPOINT, action, user, section.upper())
-        print u'{0}'.formtat(post_url)
         print cmd_dict['tokens']
         params = cmd_dict['tokens'][2:]
         param_dict = dict()

@@ -19,7 +19,5 @@ e.q: /query questdigest name 養成
 ==進階操作==
 Q: 如何設定參數?'
 A: /set <user> <SECTION> <Key=Value;Key=Value;...>
-Q: 如何移除參數?'
-A: /unset <user> <SECTION> <Key=Value;Key=Value;...>
 Q: 如何顯示目前參數?'
 A: /show <user> ALL or <any setting name>
