@@ -135,7 +135,7 @@ def handle_text_message(event):
     print u'event = {0}'.format(event)
     cmd_dict = procss_cmd(event.message.text)
     if not cmd_dict:
-        pass
+        return None
 
     if cmd_dict['type'] == CMD_TYPE_HELP:
         reply_msg(event, get_help_msg())
