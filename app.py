@@ -39,7 +39,7 @@ def send_execute_section_cmd(cmd_dict):
     try:
         action = cmd_dict['action']
         user, section = cmd_dict['tokens']
-        post_url = '{0}/{1}/{2}/{3}'.format(CC_BOT_ENDPOINT, action, user, section.upper())
+        post_url = u'{0}/{1}/{2}/{3}'.format(CC_BOT_ENDPOINT, action, user, section.upper())
         ret = post(post_url)
         print u'{0}'.format(ret)
         return ret
