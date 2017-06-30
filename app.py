@@ -206,7 +206,7 @@ def handle_image_message(event):
     print 'Start to upload image file to My Flickr...'
     photo_url = flickr_util.upload_image(file_name)
     print 'Done'
-    msg = u'已存檔/n{0}'.format(photo_url)
+    msg = u'已存檔\n{0}'.format(photo_url)
     reply_msg(event, msg)
 
 
