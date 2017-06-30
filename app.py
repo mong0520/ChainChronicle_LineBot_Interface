@@ -11,6 +11,7 @@ from linebot import WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent
 from linebot.models import TextMessage
+from linebot.models import ImageMessage
 from linebot.models import TextSendMessage
 import codecs
 
