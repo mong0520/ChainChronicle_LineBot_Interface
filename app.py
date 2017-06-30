@@ -184,13 +184,17 @@ def handle_image_message(event):
     print u'event = {0}, type = {1}'.format(event, type(event))
     message_id = event.message.id
     message_content = line_bot_api.get_message_content(message_id)
-    file_name = uuid.uuid4()
+    print 'Receieve a Image file'
+    file_name = str(uuid.uuid4())
     with open(file_name, 'wb') as fd:
         for chunk in message_content.iter_content():
             fd.write(chunk)
+    print 'Image file is saved: {0}'.format(file_name)
     # print os.path.exists(file_name)
     # print os.path.getsize(file_name)
+    print 'Start to upload image file to My Flickr...'
     flickr_util.upload_image(file_name)
+    print 'Done'
 
 
 def procss_cmd(cmd):
