@@ -12,6 +12,7 @@ from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent
 from linebot.models import TextMessage
 from linebot.models import ImageMessage 
+from linebot.models import VideoMessage 
 from linebot.models import TextSendMessage
 import codecs
 import flickr_util
@@ -205,6 +206,7 @@ def handle_image_message(event):
     print 'Start to upload image file to My Flickr...'
     flickr_util.upload_image(file_name)
     print 'Done'
+    reply_msg(event, u'照片/影片已存檔!')
 
 
 def procss_cmd(cmd):
