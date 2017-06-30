@@ -179,8 +179,8 @@ def handle_text_message(event):
 
 @handler.add(MessageEvent, message=ImageMessage)
 def handle_image_message(event):
-    print u'event = {0}'.format(event)
-    message_id = event['message']['id']
+    print u'event = {0}, type = {1}'.format(event, type(event))
+    message_id = json.loads(event['message']['id'])
     message_content = line_bot_api.get_message_content(message_id)
     file_path = './test.jpg'
     with open(file_path, 'wb') as fd:
