@@ -11,8 +11,8 @@ from linebot import WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent
 from linebot.models import TextMessage
-from linebot.models import ImageMessage 
-from linebot.models import VideoMessage 
+from linebot.models import ImageMessage
+from linebot.models import VideoMessage
 from linebot.models import TextSendMessage
 import codecs
 import flickr_util
@@ -191,7 +191,7 @@ def handle_image_message(event):
     elif isinstance(event.message, AudioMessage):
         ext = 'm4a'
     else:
-        return     
+        return
 
     message_id = event.message.id
     message_content = line_bot_api.get_message_content(message_id)
