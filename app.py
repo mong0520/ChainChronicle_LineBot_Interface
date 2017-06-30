@@ -160,6 +160,7 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_text_message(event):
     print u'event = {0}'.format(event)
+    print CC_BOT_ENDPOINT
     cmd_dict = procss_cmd(event.message.text)
     if not cmd_dict:
         return None
