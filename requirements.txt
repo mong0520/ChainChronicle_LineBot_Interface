@@ -1,3 +1,5 @@
 line-bot-sdk
 flask
 requests
+flickr_api
+python-oauth2

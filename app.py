@@ -11,8 +11,10 @@ from linebot import WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent
 from linebot.models import TextMessage
+from linebot.models import ImageMessage 
 from linebot.models import TextSendMessage
 import codecs
+import flickr_util
 
 
 app = Flask(__name__)
@@ -174,6 +176,18 @@ def handle_text_message(event):
         else:
             print u'{0} does not have callback function'.format(cmd_dict)
 
+@handler.add(MessageEvent, message=ImageMessage)
+def handle_image_message(event):
+    print u'event = {0}, type = {1}'.format(event, type(event))
+    message_id = event.message.id
+    message_content = line_bot_api.get_message_content(message_id)
+    file_path = './test.jpg'
+    with open(file_path, 'wb') as fd:
+        for chunk in message_content.iter_content():
+            fd.write(chunk)
+    print os.path.exists('./test.jpg')
+    print os.path.getsize('./test.jpg')
+    flickr_util.upload_image('./test.jpg')
 
 def procss_cmd(cmd):
     print u'raw command = {0}'.format(cmd)
