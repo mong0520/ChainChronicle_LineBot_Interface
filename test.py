@@ -7,4 +7,5 @@ line_bot_api = LineBotApi('K7nWNZKVDRtp22tciKkvtVLcqM3JsvgCZaJfE080VImVuOsbaprEd
 profile = line_bot_api.get_profile('Ua7dccb215f40c8e7924cd8d949d54ea4')
 
 print '正在發訊息給 {0}'.format(profile.display_name)
-line_bot_api.push_message(profile.user_id, TextSendMessage(text=sys.argv[1]))
+msg = 'test\nhttp://www.google.com.tw'
+line_bot_api.push_message(profile.user_id, TextSendMessage(msg))
