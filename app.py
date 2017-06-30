@@ -175,6 +175,11 @@ def handle_text_message(event):
             print u'{0} does not have callback function'.format(cmd_dict)
 
 
+@handler.add(MessageEvent, message=ImageMessage)
+def handle_image_message(event):
+    print u'event = {0}'.format(event)
+
+
 def procss_cmd(cmd):
     print u'raw command = {0}'.format(cmd)
     if not cmd or not cmd.startswith('/'):
