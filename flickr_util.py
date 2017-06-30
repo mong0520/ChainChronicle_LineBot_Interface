@@ -18,5 +18,5 @@ a = auth_handler.load('myauth')
 flickr_api.set_auth_handler(a)
 #
 
-def upload_image(img_path, title='AutoUpload', photo_set):
+def upload_image(img_path, title='AutoUpload', photo_set='AutoGenSet'):
     flickr_api.upload(photo_file=img_path, title=title)

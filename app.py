@@ -15,6 +15,7 @@ from linebot.models import ImageMessage
 from linebot.models import TextSendMessage
 import codecs
 import flickr_util
+import uuid
 
 
 app = Flask(__name__)
@@ -183,13 +184,13 @@ def handle_image_message(event):
     print u'event = {0}, type = {1}'.format(event, type(event))
     message_id = event.message.id
     message_content = line_bot_api.get_message_content(message_id)
-    file_path = './test.jpg'
+    file_name = uuid.uuid4()
     with open(file_path, 'wb') as fd:
         for chunk in message_content.iter_content():
             fd.write(chunk)
-    print os.path.exists('./test.jpg')
-    print os.path.getsize('./test.jpg')
-    flickr_util.upload_image('./test.jpg')
+    # print os.path.exists(file_name)
+    # print os.path.getsize(file_name)
+    flickr_util.upload_image(file_name)
 
 
 def procss_cmd(cmd):
