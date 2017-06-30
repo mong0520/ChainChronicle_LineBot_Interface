@@ -158,6 +158,7 @@ def callback():
 
     return 'OK'
 
+
 @handler.add(MessageEvent, message=TextMessage)
 def handle_text_message(event):
     print u'event = {0}'.format(event)
@@ -186,6 +187,9 @@ def handle_image_message(event):
     with open(file_path, 'wb') as fd:
         for chunk in message_content.iter_content():
             fd.write(chunk)
+    print os.path.exists('./test.jpg')
+    print os.path.getsize('./test.jpg')
+
 
 
 def procss_cmd(cmd):
