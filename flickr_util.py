@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 import flickr_api
+import os
 
-# FIRST time
+# FIRST time you need to create your auth file
+
 #a = flickr_api.auth.AuthHandler() #creates the AuthHandler object
 #perms = "write" # set the required permissions
 #url = a.get_authorization_url(perms)
@@ -14,12 +16,11 @@ import flickr_api
 
 # if you already have the token file
 flickr_username = 'Neil.Wei'
-flickr_api.set_keys(api_key='5d3fd4c39ad5005fb9547fc540647cf9', api_secret='83d46646050639ab')
+flickr_api.set_keys(api_key=os.environ['FlickrApiKey'], api_secret=os.environ['FlickrApiSecret'])
 auth_handler = flickr_api.auth.AuthHandler()
 a = auth_handler.load('myauth')
 flickr_api.set_auth_handler(a)
 user = flickr_api.Person.findByUserName(flickr_username)
-#
 
 def upload_image(img_path, title='Uploaded by Line Bot', photo_set='LineBot'):
     photo = flickr_api.upload(photo_file=img_path, title=title)
