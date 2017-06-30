@@ -179,6 +179,12 @@ def handle_text_message(event):
 
 @handler.add(MessageEvent, message=ImageMessage)
 def handle_image_message(event):
+    message_id = event['message']['id']
+    message_content = line_bot_api.get_message_content(message_id)
+    file_path = './test.jpg'
+    with open(file_path, 'wb') as fd:
+        for chunk in message_content.iter_content():
+            fd.write(chunk)
     print u'event = {0}'.format(event)
 
 
