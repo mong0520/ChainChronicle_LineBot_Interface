@@ -19,7 +19,7 @@ import flickr_util
 
 app = Flask(__name__)
 VERSION = 'v0.1.1'
-CC_BOT_ENDPOINT = 'http://52.192.105.98'
+CC_BOT_ENDPOINT = 'http://13.113.84.243'
 DEFAULT_HEADERS = {'Content-Type': 'application/json'}
 HELP_FILE_PATH = 'cmd_help.txt'
 HELP_MSG = None
@@ -41,7 +41,7 @@ def send_execute_section_cmd(cmd_dict):
     try:
         action = cmd_dict['action']
         user, section = cmd_dict['tokens']
-        post_url = '{0}/{1}/{2}/{3}'.format(CC_BOT_ENDPOINT, action, user, section.upper())
+        post_url = u'{0}/{1}/{2}/{3}'.format(CC_BOT_ENDPOINT, action, user, section.upper())
         ret = post(post_url)
         print u'{0}'.format(ret)
         return ret
@@ -159,9 +159,11 @@ def callback():
 
     return 'OK'
 
+
 @handler.add(MessageEvent, message=TextMessage)
 def handle_text_message(event):
     print u'event = {0}'.format(event)
+    print CC_BOT_ENDPOINT
     cmd_dict = procss_cmd(event.message.text)
     if not cmd_dict:
         return None
@@ -188,6 +190,7 @@ def handle_image_message(event):
     print os.path.exists('./test.jpg')
     print os.path.getsize('./test.jpg')
     flickr_util.upload_image('./test.jpg')
+
 
 def procss_cmd(cmd):
     print u'raw command = {0}'.format(cmd)
