@@ -179,13 +179,23 @@ def handle_text_message(event):
         else:
             print u'{0} does not have callback function'.format(cmd_dict)
 
-@handler.add(MessageEvent, message=ImageMessage)
+@handler.add(MessageEvent, message=(ImageMessage, VideoMessage))
 def handle_image_message(event):
     print u'event = {0}, type = {1}'.format(event, type(event))
+
+    if isinstance(event.message, ImageMessage):
+        ext = 'jpg'
+    elif isinstance(event.message, VideoMessage):
+        ext = 'mp4'
+    elif isinstance(event.message, AudioMessage):
+        ext = 'm4a'
+    else:
+        return     
+
     message_id = event.message.id
     message_content = line_bot_api.get_message_content(message_id)
     print 'Receieve a Image file'
-    file_name = str(uuid.uuid4())
+    file_name = '{0}.{1}'.format(str(uuid.uuid4()), ext)
     with open(file_name, 'wb') as fd:
         for chunk in message_content.iter_content():
             fd.write(chunk)
