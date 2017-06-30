@@ -28,4 +28,13 @@ Fixie :
 `https://{YOUR_HEROKU_SERVER_ID}.herokuapp.com/callback`
 
 # How to Use
-tbd
+需要在 Heroku 設定以下環境變數 (Config Vars)
+
+Secret: {LINE_API_SECRET_KEY}
+
+Token: {LINE_API_SECRET_TOKEN}
+
+FlickrApiKey: {FLICKR_API_KEY}
+
+FlickrApiSecret: {FLICKR_API_SECRET}
+
