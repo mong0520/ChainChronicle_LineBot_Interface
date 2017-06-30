@@ -204,9 +204,10 @@ def handle_image_message(event):
     # print os.path.exists(file_name)
     # print os.path.getsize(file_name)
     print 'Start to upload image file to My Flickr...'
-    flickr_util.upload_image(file_name)
+    photo_url = flickr_util.upload_image(file_name)
     print 'Done'
     reply_msg(event, u'照片/影片已存檔!')
+    reply_msg(event, photo_url)
 
 
 def procss_cmd(cmd):

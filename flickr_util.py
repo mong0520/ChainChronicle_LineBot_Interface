@@ -24,7 +24,7 @@ user = flickr_api.Person.findByUserName(flickr_username)
 
 def upload_image(img_path, title='Uploaded by Line Bot', photo_set='LineBot'):
     photo = flickr_api.upload(photo_file=img_path, title=title)
-    print photo
+    photo_url = photo.getPageUrl()
     if get_photoset(photo_set) is None:
         print 'Create photoset {0}'.format(photo_set)
         create_photoset(photo_set, photo)
@@ -32,6 +32,7 @@ def upload_image(img_path, title='Uploaded by Line Bot', photo_set='LineBot'):
         print 'Add photo to {0}'.format(photo_set) 
         ps = get_photoset(photo_set)
         ps.addPhoto(photo=photo)
+    return photo_url
 
 
 def get_all_photosets():
