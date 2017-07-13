@@ -21,7 +21,7 @@ import uuid
 
 app = Flask(__name__)
 VERSION = 'v0.1.1'
-CC_BOT_ENDPOINT = 'http://13.113.84.243'
+CC_BOT_ENDPOINT = 'http://lineage.twbbs.org'
 DEFAULT_HEADERS = {'Content-Type': 'application/json'}
 HELP_FILE_PATH = 'cmd_help.txt'
 HELP_MSG = None
