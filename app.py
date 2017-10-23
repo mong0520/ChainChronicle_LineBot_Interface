@@ -21,7 +21,7 @@ import uuid
 
 app = Flask(__name__)
 VERSION = 'v0.1.1'
-CC_BOT_ENDPOINT = 'http://lineage.twbbs.org'
+CC_BOT_ENDPOINT = 'http://aws.nt1.me'
 DEFAULT_HEADERS = {'Content-Type': 'application/json'}
 HELP_FILE_PATH = 'cmd_help.txt'
 HELP_MSG = None
@@ -204,7 +204,7 @@ def handle_image_message(event):
     # print os.path.exists(file_name)
     # print os.path.getsize(file_name)
     print 'Start to upload image file to My Flickr...'
-    photo_url = flickr_util.upload_image(file_name)
+    photo_url = flickr_util.upload_image(file_name, photo_set="LineBot")
     print 'Done'
     msg = u'已存檔\n{0}'.format(photo_url)
     # reply_msg(event, msg)
