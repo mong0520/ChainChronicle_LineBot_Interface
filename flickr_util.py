@@ -22,14 +22,17 @@ a = auth_handler.load('myauth')
 flickr_api.set_auth_handler(a)
 user = flickr_api.Person.findByUserName(flickr_username)
 
-def upload_image(img_path, title='Uploaded by Line Bot', photo_set='LineBot'):
+def upload_image(img_path, title='Uploaded by Line Bot', photo_set=None):
     photo = flickr_api.upload(photo_file=img_path, title=title)
     photo_url = photo.getPageUrl()
+    if photo_set is None:
+        return photo_url
+
     if get_photoset(photo_set) is None:
         print 'Create photoset {0}'.format(photo_set)
         create_photoset(photo_set, photo)
     else:
-        print 'Add photo to {0}'.format(photo_set) 
+        print 'Add photo to {0}'.format(photo_set)
         ps = get_photoset(photo_set)
         ps.addPhoto(photo=photo)
     return photo_url
