@@ -261,6 +261,10 @@ def post(url, data=None, headers=DEFAULT_HEADERS):
 
 import os
 if __name__ == "__main__":
+
+    # For self-hosted ssl
     context = ('/etc/letsencrypt/live/www.nt1.me/fullchain.pem', '/etc/letsencrypt/live/www.nt1.me/privkey.pem')
     app.run(host='0.0.0.0', port=os.environ['PORT'], ssl_context=context)
-    # app.run(host='0.0.0.0', port=8080)
+    
+    # for hosted service
+    # app.run(host='0.0.0.0', port=os.environ['PORT'])
