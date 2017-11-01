@@ -10,10 +10,17 @@ from linebot import LineBotApi
 from linebot import WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent
+from linebot.models import PostbackEvent
 from linebot.models import TextMessage
 from linebot.models import ImageMessage
 from linebot.models import VideoMessage
-from linebot.models import TextSendMessage
+from linebot.models import (
+    TextSendMessage, TemplateSendMessage, ButtonsTemplate,
+    PostbackTemplateAction, MessageTemplateAction,
+    URITemplateAction, DatetimePickerTemplateAction,
+    ConfirmTemplate, CarouselTemplate, CarouselColumn,
+    ImageCarouselTemplate, ImageCarouselColumn
+)
 import codecs
 import flickr_util
 import uuid
@@ -32,6 +39,7 @@ CMD_TYPE_SET_CFG = 2
 CMD_TYPE_SHOW_CFG = 3
 CMD_TYPE_QUERY_DB = 4
 CMD_TYPE_UNSET_CFG = 5
+CMD_TYPE_TEST = 6
 CMD_TYPE_INVALID = -1
 CMD_TYPE_UNKNOWN = -2
 
@@ -140,6 +148,12 @@ CMD_DICT = {
         'type': CMD_TYPE_UNSET_CFG,
         'callback': send_unset_cfg_cmd,
         'tokens': None
+    },
+    'test':{
+        'raw_command': None,
+        'type': CMD_TYPE_TEST,
+        'callback': send_unset_cfg_cmd,
+        'tokens': None
     }
 }
 
@@ -161,9 +175,20 @@ def callback():
 
     return 'OK'
 
+@handler.add(PostbackEvent)
+def handle_postback_message(event):
+    print event, type(event)
+    print event.postback.data, type(event.postback.data)
+    cmd = json.loads(event.postback.data)
+    print cmd['cmd']
+    cmd_dict = procss_cmd(cmd['cmd'])
+    print cmd_dict
+    ret = cmd_dict['callback'](cmd_dict)
+    reply_msg(event, ret)
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_text_message(event):
+    print MessageEvent
     print u'event = {0}'.format(event)
     print CC_BOT_ENDPOINT
     cmd_dict = procss_cmd(event.message.text)
@@ -172,6 +197,8 @@ def handle_text_message(event):
 
     if cmd_dict['type'] == CMD_TYPE_HELP:
         reply_msg(event, get_help_msg())
+    if cmd_dict['type'] == CMD_TYPE_TEST:
+        reply_msg_btn(event, None)
     else:
         if cmd_dict['callback']:
             push_msg(event, u'處理中，請稍後')
@@ -238,10 +265,39 @@ def push_msg(event, msg):
     # print event.source.user_id
     try:
         user_id = event.source.user_id
+        print '### User id = ', user_id
         line_bot_api.push_message(user_id, TextSendMessage(text=msg))
     except:
         room_id = event.source.room_id
         line_bot_api.push_message(room_id, TextSendMessage(text=msg))
+
+
+def reply_msg_btn(event, msg):
+    cmd = {'cmd': '/run mong status'}
+    buttons_template_message = TemplateSendMessage(
+    alt_text='Buttons template',
+    template=ButtonsTemplate(
+        thumbnail_image_url='https://img1.apk.tw/data/attachment/common/0f/common_959_banner.jpg',
+        title='鎖鍊戰記機器人',
+        text='你是不是想要？',
+        actions=[
+            PostbackTemplateAction(
+                label='看角色狀態',
+                data=json.dumps(cmd)
+            ),
+            MessageTemplateAction(
+                label='轉蛋',
+                text='message text'
+            ),
+            URITemplateAction(
+                label='選擇關卡',
+                uri='http://example.com/'
+            )
+        ]
+    )
+)
+    print 'token = ', event.reply_token
+    line_bot_api.reply_message(event.reply_token, buttons_template_message)
 
 
 def get_help_msg():
@@ -259,12 +315,15 @@ def post(url, data=None, headers=DEFAULT_HEADERS):
     r = requests.post(url, data=data, headers=DEFAULT_HEADERS)
     return r.text
 
+
+
 import os
 if __name__ == "__main__":
 
     # For self-hosted ssl
     context = ('/etc/letsencrypt/live/www.nt1.me/fullchain.pem', '/etc/letsencrypt/live/www.nt1.me/privkey.pem')
     app.run(host='0.0.0.0', port=os.environ['PORT'], ssl_context=context)
-    
+
     # for hosted service
     # app.run(host='0.0.0.0', port=os.environ['PORT'])
+
