@@ -14,13 +14,6 @@ from linebot.models import PostbackEvent
 from linebot.models import TextMessage
 from linebot.models import ImageMessage
 from linebot.models import VideoMessage
-from linebot.models import (
-    TextSendMessage, TemplateSendMessage, ButtonsTemplate,
-    PostbackTemplateAction, MessageTemplateAction,
-    URITemplateAction, DatetimePickerTemplateAction,
-    ConfirmTemplate, CarouselTemplate, CarouselColumn,
-    ImageCarouselTemplate, ImageCarouselColumn
-)
 import codecs
 import flickr_util
 import uuid
@@ -202,8 +195,6 @@ def handle_text_message(event):
 
     if cmd_dict['type'] == CMD_TYPE_HELP:
         reply_msg(event, get_help_msg())
-    if cmd_dict['type'] == CMD_TYPE_TEST:
-        reply_msg_btn(event, None)
     else:
         if cmd_dict['callback']:
             push_msg(event, u'處理中，請稍後')
@@ -276,33 +267,6 @@ def push_msg(event, msg):
         room_id = event.source.room_id
         line_bot_api.push_message(room_id, TextSendMessage(text=msg))
 
-
-def reply_msg_btn(event, msg):
-    cmd = {'cmd': '/run mong status'}
-    buttons_template_message = TemplateSendMessage(
-    alt_text='Buttons template',
-    template=ButtonsTemplate(
-        thumbnail_image_url='https://img1.apk.tw/data/attachment/common/0f/common_959_banner.jpg',
-        title='鎖鍊戰記機器人',
-        text='你是不是想要？',
-        actions=[
-            PostbackTemplateAction(
-                label='看角色狀態',
-                data=json.dumps(cmd)
-            ),
-            MessageTemplateAction(
-                label='轉蛋',
-                text='message text'
-            ),
-            URITemplateAction(
-                label='選擇關卡',
-                uri='http://example.com/'
-            )
-        ]
-    )
-)
-    print 'token = ', event.reply_token
-    line_bot_api.reply_message(event.reply_token, buttons_template_message)
 
 
 def get_help_msg():
