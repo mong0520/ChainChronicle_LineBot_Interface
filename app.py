@@ -157,6 +157,11 @@ CMD_DICT = {
     }
 }
 
+@app.route("/health_check", methods=['GET'])
+def health_check():
+    return "alive\n"
+
+
 @app.route("/callback", methods=['POST'])
 def callback():
     # get X-Line-Signature header value
@@ -321,9 +326,9 @@ import os
 if __name__ == "__main__":
 
     # For self-hosted ssl
-    context = ('/etc/dehydrated/certs/nt1.me/fullchain.pem', '/etc/dehydrated/certs/nt1.me/privkey.pem')
-    app.run(host='0.0.0.0', port=os.environ['PORT'], ssl_context=context)
+    # context = ('/etc/dehydrated/certs/nt1.me/fullchain.pem', '/etc/dehydrated/certs/nt1.me/privkey.pem')
+    # app.run(host='0.0.0.0', port=os.environ['PORT'], ssl_context=context)
 
     # for hosted service
-    # app.run(host='0.0.0.0', port=os.environ['PORT'])
+    app.run(host='0.0.0.0', port=os.environ['PORT'])
 
