@@ -85,5 +85,6 @@ if __name__ == "__main__":
     # app.run(host='0.0.0.0', port=os.environ['PORT'], ssl_context=context)
 
     # for hosted service
-    app.run(host='0.0.0.0', port=80)
+    print os.environ['PORT']
+    app.run(host='0.0.0.0', port=os.environ['PORT'])
 
