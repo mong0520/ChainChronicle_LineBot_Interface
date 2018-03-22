@@ -321,7 +321,7 @@ import os
 if __name__ == "__main__":
 
     # For self-hosted ssl
-    context = ('/etc/letsencrypt/live/www.nt1.me/fullchain.pem', '/etc/letsencrypt/live/www.nt1.me/privkey.pem')
+    context = ('/etc/dehydrated/certs/nt1.me/fullchain.pem', '/etc/dehydrated/certs/nt1.me/privkey.pem')
     app.run(host='0.0.0.0', port=os.environ['PORT'], ssl_context=context)
 
     # for hosted service
